@@ -1,0 +1,305 @@
+definitions:
+  models.User:
+    properties:
+      addManagerId:
+        type: integer
+      addTime:
+        type: string
+      address:
+        type: string
+      avatar:
+        type: string
+      departID:
+        type: integer
+      email:
+        type: string
+      id:
+        type: integer
+      isDeleted:
+        type: integer
+      isLock:
+        type: integer
+      loginCount:
+        type: integer
+      loginLastIp:
+        type: string
+      loginLastTime:
+        type: string
+      mobile:
+        type: string
+      modifyManagerId:
+        type: integer
+      modifyTime:
+        type: string
+      nickName:
+        type: string
+      password:
+        type: string
+      qrcode:
+        type: string
+      remark:
+        type: string
+      roleId:
+        type: integer
+      token:
+        type: string
+      userName:
+        type: string
+    type: object
+  viewModels.MailBoxViewModel:
+    properties:
+      email:
+        description: 绑定邮箱-收件邮箱
+        type: string
+      uid:
+        description: 绑定用户ID-发件人
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /admin/getRefreshToken:
+    get:
+      consumes:
+      - application/json
+      description: 用于用户登录系统管理后台
+      parameters:
+      - description: 旧的token
+        in: query
+        name: token
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{"status": 200,"message":"成功"}'
+          schema:
+            type: string
+        "400":
+          description: '{"status": 500,"message":"失败"}'
+          schema:
+            type: string
+      summary: 获取更新的token
+      tags:
+      - 测试
+  /admin/user/Login:
+    get:
+      consumes:
+      - application/json
+      description: 用于用户登录系统管理后台
+      parameters:
+      - description: 用户名
+        in: query
+        name: UserName
+        required: true
+        type: string
+      - description: 密码
+        in: query
+        name: Password
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{"status": 200,"message":"成功"}'
+          schema:
+            type: string
+        "400":
+          description: '{"status": 500,"message":"失败"}'
+          schema:
+            type: string
+      summary: 后台登陆获取token
+      tags:
+      - 测试
+  /admin/user/SendVerifyCode:
+    post:
+      consumes:
+      - application/json
+      description: 向用户绑定的邮箱发送验证码
+      parameters:
+      - description: 提交用户信息
+        in: body
+        name: MailBoxInfo
+        required: true
+        schema:
+          $ref: '#/definitions/viewModels.MailBoxViewModel'
+      responses:
+        "200":
+          description: '{"status": 200,"message":"成功"}'
+          schema:
+            type: string
+        "400":
+          description: '{"status": 500,"message":"失败"}'
+          schema:
+            type: string
+      summary: 发送验证码
+      tags:
+      - 验证码测试
+  /admin/user/add:
+    post:
+      consumes:
+      - application/json
+      description: 用于系统用户的新增
+      parameters:
+      - description: 提交用户信息
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      responses:
+        "200":
+          description: '{"status": 200,"message":"成功"}'
+          schema:
+            type: string
+        "400":
+          description: '{"status": 500,"message":"失败"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 新增用户信息
+      tags:
+      - 测试
+  /admin/user/del/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: 用于删除系统单个信息
+      parameters:
+      - description: 用户ID(主键)
+        in: query
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{"status": 200,"message":"成功"}'
+          schema:
+            type: string
+        "400":
+          description: '{"status": 500,"message":"失败"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 删除用户
+      tags:
+      - 测试
+  /admin/user/edit/{id}:
+    put:
+      consumes:
+      - application/json
+      description: 用于编辑系统用户信息
+      parameters:
+      - description: 提交用户信息
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      responses:
+        "200":
+          description: '{"status": 200,"message":"成功"}'
+          schema:
+            type: string
+        "400":
+          description: '{"status": 500,"message":"失败"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 编辑用户信息
+      tags:
+      - 测试
+  /admin/user/getUser:
+    get:
+      consumes:
+      - application/json
+      description: 用于系统用户的查询
+      parameters:
+      - description: 用户ID(主键)
+        in: query
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{"status": 200,"message":"成功"}'
+          schema:
+            type: string
+        "400":
+          description: '{"status": 500,"message":"失败"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 查询单个用户
+      tags:
+      - 测试
+  /admin/user/getUserAndRoleInfoList:
+    get:
+      consumes:
+      - application/json
+      description: 用于系统用户的查询
+      parameters:
+      - description: 查询-用户名称
+        in: query
+        name: username
+        type: string
+      - description: 当前页
+        in: query
+        name: pagenum
+        required: true
+        type: string
+      - description: 页码
+        in: query
+        name: pagesize
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{"status": 200,"message":"成功"}'
+          schema:
+            type: string
+        "400":
+          description: '{"status": 500,"message":"失败"}'
+          schema:
+            type: string
+      summary: 查询用户列表(2)
+      tags:
+      - 测试
+  /admin/user/getUserList:
+    get:
+      consumes:
+      - application/json
+      description: 用于系统用户的查询
+      parameters:
+      - description: 当前页
+        in: query
+        name: pagenum
+        required: true
+        type: string
+      - description: 页码
+        in: query
+        name: pagesize
+        required: true
+        type: string
+      responses:
+        "200":
+          description: '{"status": 200,"message":"成功"}'
+          schema:
+            type: string
+        "400":
+          description: '{"status": 500,"message":"失败"}'
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: 查询用户列表
+      tags:
+      - 测试
+securityDefinitions:
+  ApiKeyAuth:
+    in: JWT授权(数据将在请求头中进行传输) 直接在下框中输入Bearer {token}（注意两者之间是一个空格）\"
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
